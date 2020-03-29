@@ -9,6 +9,7 @@
 package com.jh.shiro.controller;
 
 import com.jh.shiro.entity.ProdutsBean;
+import com.jh.shiro.entity.dto.ProdutsDto;
 import com.jh.shiro.service.ProdutsService;
 import com.jh.shiro.service.impl.ProdutsServiceImpl;
 import com.jh.shiro.util.Result;
@@ -104,10 +105,10 @@ public class ProdutsController {
      * @return: com.jh.shiro.util.Result
      */
     @PostMapping("shiro/listProdutsInfo")
-    public Result listProdutsInfo() {
+    public Result listProdutsInfo(@RequestBody ProdutsDto produtsDto) {
         Result result;
         try {
-            result = produtsService.list();
+            result = produtsService.listProdutsInfo(produtsDto);
         } catch (Exception e) {
             result = new Result(ResultCode.FAIL);
         }

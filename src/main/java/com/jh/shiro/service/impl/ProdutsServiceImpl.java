@@ -10,10 +10,15 @@ package com.jh.shiro.service.impl;
 
 import com.jh.shiro.dao.ProdutsDao;
 import com.jh.shiro.entity.ProdutsBean;
+import com.jh.shiro.entity.dto.ProdutsDto;
 import com.jh.shiro.service.ProdutsService;
 import com.jh.shiro.util.Result;
 import com.jh.shiro.util.ResultCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,5 +110,25 @@ public class ProdutsServiceImpl implements ProdutsService {
             throw e;
         }
         return list.size();
+    }
+
+    @Override
+    public Result listProdutsInfo(ProdutsDto produtsDto) {
+        Result result;
+        int page = produtsDto.getPage() == null ? 0 : produtsDto.getPage() - 1;
+        int size = produtsDto.getSize() == null ? 100 : produtsDto.getSize();
+        Page<ProdutsBean> produtsBeans;
+        try {
+            Sort sort = Sort.by(Sort.Direction.DESC, "id");
+            Pageable pageable = PageRequest.of(page, size, sort);
+            result = new Result(ResultCode.SUCCESS);
+            produtsBeans = produtsDao.findAll(pageable);
+            result.setList(produtsBeans.getContent());
+            result.setTotalCount((int) produtsBeans.getTotalElements());
+        } catch (Exception e) {
+            log.error("查询失败：{}", e.getMessage());
+            throw e;
+        }
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.jh.shiro.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.jh.shiro.entity.DataResult;
 import com.jh.shiro.entity.UserEntity;
 import com.jh.shiro.service.UserService;
@@ -118,7 +119,7 @@ public class UserController {
             model.addAttribute("msg", "登录成功");
             LOG.info("登录成功");
             result = new Result(ResultCode.LOGINSUCCESS);
-            result.setData(userEntity);
+            result.setToken(token);
         } catch (UnknownAccountException e) {
             result = new Result(ResultCode.FAIL);
             result.setMessage("用户名不存在");

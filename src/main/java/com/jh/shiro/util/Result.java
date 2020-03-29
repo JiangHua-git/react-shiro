@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.shiro.authc.UsernamePasswordToken;
 
 import java.util.List;
 
@@ -23,6 +24,14 @@ public class Result {
      * 是否成功
      */
     private Boolean success;
+    /**
+     * 总条数
+     */
+    private Integer totalCount;
+    /**
+     * token
+     */
+    private UsernamePasswordToken token;
     /**
      * 返回码
      */
