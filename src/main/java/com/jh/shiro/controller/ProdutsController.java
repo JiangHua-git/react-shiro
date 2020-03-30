@@ -15,10 +15,7 @@ import com.jh.shiro.service.impl.ProdutsServiceImpl;
 import com.jh.shiro.util.Result;
 import com.jh.shiro.util.ResultCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -85,15 +82,14 @@ public class ProdutsController {
     }
 
     /**
-     * 查
-     * @param produtsBean
+     * 根据id查询商品
      * @return: com.jh.shiro.util.Result
      */
-    @PostMapping("shiro/queryProdutsInfo")
-    public Result queryProdutsInfo(@RequestBody ProdutsBean produtsBean) {
+    @PutMapping("shiro/queryProdutsInfo/{id}")
+    public Result queryProdutsInfo(@PathVariable("id") String id) {
         Result result;
         try {
-            result = produtsService.add(produtsBean);
+            result = produtsService.get(id);
         } catch (Exception e) {
             result = new Result(ResultCode.FAIL);
         }
@@ -101,7 +97,7 @@ public class ProdutsController {
     }
 
     /**
-     * 查所有
+     * 查询所有商品
      * @return: com.jh.shiro.util.Result
      */
     @PostMapping("shiro/listProdutsInfo")

@@ -54,7 +54,7 @@ public interface CommonService<T> {
      * @param id
      * @return: Result
      */
-    Result get(Integer id);
+    Result get(String id);
 
     /**
      * 查询所有

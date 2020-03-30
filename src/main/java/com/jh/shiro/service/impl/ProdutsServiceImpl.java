@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description：商品Service实现类
@@ -76,8 +77,18 @@ public class ProdutsServiceImpl implements ProdutsService {
     }
 
     @Override
-    public Result get(Integer id) {
-        return null;
+    public Result get(String id) {
+        Result result;
+        Optional produtsBean;
+        try {
+            produtsBean = produtsDao.findById(Integer.parseInt(id));
+            result = new Result(ResultCode.SUCCESS);
+            result.setData(produtsBean);
+        } catch (Exception e) {
+            log.error("查询失败：{}", e.getMessage());
+            throw e;
+        }
+        return result;
     }
 
     @Override
