@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.websocket.server.PathParam;
+import java.util.Map;
 
 /**
  * @description：商品Controller
@@ -35,6 +37,7 @@ public class ProdutsController {
 
     /**
      * 增
+     *
      * @param produtsBean
      * @return: com.jh.shiro.util.Result
      */
@@ -51,14 +54,16 @@ public class ProdutsController {
 
     /**
      * 删
-     * @param produtsBean
+     *
+     * @param map
      * @return: com.jh.shiro.util.Result
      */
     @PostMapping("shiro/deleteProdutsInfo")
-    public Result deleteProdutsInfo(@RequestBody ProdutsBean produtsBean) {
-        Result result;
+    public Result deleteProdutsInfo(@RequestBody Map map)
+    {
+        Result result = null;
         try {
-            result = produtsService.add(produtsBean);
+            result = produtsService.deleteById(Integer.valueOf(map.get("id").toString()));
         } catch (Exception e) {
             result = new Result(ResultCode.FAIL);
         }
@@ -67,22 +72,26 @@ public class ProdutsController {
 
     /**
      * 改
+     *
      * @param produtsBean
      * @return: com.jh.shiro.util.Result
      */
-    @PostMapping("shiro/updateProdutsInfo")
-    public Result updateProdutsInfo(@RequestBody ProdutsBean produtsBean) {
+    @PutMapping("shiro/updateProdutsInfo/{id}")
+    public Result updateProdutsInfo(@PathVariable("id") Integer id, @RequestBody ProdutsBean produtsBean) {
         Result result;
         try {
-            result = produtsService.add(produtsBean);
+            log.info("fdsafdfs{}",id);
+            result = produtsService.update(produtsBean);
         } catch (Exception e) {
             result = new Result(ResultCode.FAIL);
+            result.setMessage(e.getMessage());
         }
         return result;
     }
 
     /**
      * 根据id查询商品
+     *
      * @return: com.jh.shiro.util.Result
      */
     @PutMapping("shiro/queryProdutsInfo/{id}")
@@ -98,6 +107,7 @@ public class ProdutsController {
 
     /**
      * 查询所有商品
+     *
      * @return: com.jh.shiro.util.Result
      */
     @PostMapping("shiro/listProdutsInfo")

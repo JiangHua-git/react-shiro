@@ -9,5 +9,5 @@ spring:
   #出现相同的bean时可以覆盖，解决jpa的问题
   main:
     allow-bean-definition-overriding: true
-jpa:
-  show-sql: true
+  jpa:
+   show-sql: true

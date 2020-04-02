@@ -63,7 +63,13 @@ public class ProdutsServiceImpl implements ProdutsService {
 
     @Override
     public Result deleteById(Integer id) {
-        return null;
+        Result result = new Result();
+        try {
+            produtsDao.deleteById(id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return result;
     }
 
     @Override
@@ -72,8 +78,16 @@ public class ProdutsServiceImpl implements ProdutsService {
     }
 
     @Override
-    public Result update(ProdutsBean produtsBean) {
-        return null;
+    public Result update(ProdutsBean produtsBean) throws Exception{
+        Result result;
+        try {
+            ProdutsBean produtsBean1 = produtsDao.save(produtsBean);
+            result = new Result(ResultCode.SUCCESS);
+        } catch (Exception e) {
+            log.info("err: {}", e.getMessage());
+            throw new Exception("保存失败");
+        }
+        return result;
     }
 
     @Override

@@ -45,8 +45,9 @@ public interface CommonService<T> {
      *
      * @param t
      * @return: Result
+     * @throws Exception
      */
-    Result update(T t);
+    Result update(T t) throws Exception;
 
     /**
      * 根据id查询
