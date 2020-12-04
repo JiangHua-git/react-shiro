@@ -6,8 +6,7 @@ import com.jh.shiro.dao.UserDao;
 import com.jh.shiro.entity.DataResult;
 import com.jh.shiro.entity.UserEntity;
 import com.jh.shiro.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,10 +18,9 @@ import java.util.List;
  * @author jh
  * @date 2020/3/9
  */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-
-    private static final Log LOG = LogFactory.getLog(UserServiceImpl.class);
 
     @Resource
     private UserDao userDao;
@@ -47,7 +45,7 @@ public class UserServiceImpl implements UserService {
             dataResult.setTotalcount((int) pageInfo.getTotal());
             dataResult.setResult(list);
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            log.error(e.getMessage());
         }
         return dataResult;
     }
@@ -71,7 +69,7 @@ public class UserServiceImpl implements UserService {
             dataResult.setTotalcount(1);
             dataResult.setData(user);
         } catch (Exception e) {
-            LOG.fatal("查询错误{}" + e.getMessage());
+            log.error("查询错误: {}", e.getMessage());
         }
         return dataResult;
     }
@@ -79,23 +77,34 @@ public class UserServiceImpl implements UserService {
     /**
      * 获取用户权限
      *
-     * @param id 用户id
+     * @param name 用户名
      * @return Result
      * @author jh
      * @date 2020/3/11
      */
     @Override
-    public DataResult getAuth(Integer id) {
-        String auth;
+    public DataResult getAuth(String name) {
+        List<String> authList;
         DataResult dataResult = new DataResult();
         try {
-            auth = userDao.getAuth(id);
+            authList = userDao.getAuth(name);
             dataResult.setSuccess(true);
-            dataResult.setMessage("");
-            dataResult.setData(auth);
+            dataResult.setMessage("权限查询成功");
+            dataResult.setResult(authList);
         } catch (Exception e) {
-            LOG.fatal("查询错误{}" + e.getMessage());
+            log.error("查询错误: {}", e.getMessage());
         }
         return dataResult;
+    }
+
+    @Override
+    public UserEntity getUserInfoById(int id) {
+        UserEntity user = null;
+        try {
+            user = userDao.getUserInfoById(id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return user;
     }
 }

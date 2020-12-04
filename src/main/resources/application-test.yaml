@@ -1,0 +1,13 @@
+person:
+  name: zhangsan
+  age: 20
+  boss: false
+  maps:
+    interest: basketball
+    sex: man
+  lists:
+    - son
+    - girl
+  dog:
+    name: 小黑
+    age: 2

@@ -3,8 +3,7 @@ package com.jh.shiro.config;
 import com.jh.shiro.entity.DataResult;
 import com.jh.shiro.entity.UserEntity;
 import com.jh.shiro.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,6 +13,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 用户
@@ -21,9 +21,13 @@ import javax.annotation.Resource;
  * @author: jh
  * @date: 2020/3/10
  */
+@Slf4j
 public class UserRealm extends AuthorizingRealm {
 
-    private static final Log log = LogFactory.getLog(UserRealm.class);
+    @Override
+    public void setName(String name) {
+        super.setName("userRealm");
+    }
 
     @Resource
     private UserService userService;
@@ -46,18 +50,20 @@ public class UserRealm extends AuthorizingRealm {
         //info.addStringPermission("user:add");
 
         //获取当前用户
-        Subject subject = SecurityUtils.getSubject();
-        UserEntity user = (UserEntity) subject.getPrincipal();
-        int id = user.getId();
+        UserEntity userEntity = (UserEntity) principalCollection.getPrimaryPrincipal();
+        /*Subject subject = SecurityUtils.getSubject();
+        UserEntity user = (UserEntity) subject.getPrincipal();*/
+        String name = userEntity.getName();
         //到数据库查询当前用户权限
         DataResult dataResult;
-        String autn;
+        List<String> authList;
         try {
-            dataResult = userService.getAuth(id);
-            autn = (String) dataResult.getData();
-            info.addStringPermission(autn);
+            dataResult = userService.getAuth(name);
+            authList = (List<String>) dataResult.getResult();
+            authList.forEach(System.out::println);
+            info.addStringPermissions(authList);
         } catch (Exception e) {
-            log.fatal("授权失败");
+            log.error("授权失败");
         }
 
         return info;
@@ -76,9 +82,7 @@ public class UserRealm extends AuthorizingRealm {
         log.info("执行认证逻辑");
         DataResult dataResult;
         UserEntity user;
-        /**
-         * 编写shiro判断逻辑，判断用户名何密码
-         */
+
         //1.判断用户名
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String name = token.getUsername();
@@ -88,8 +92,8 @@ public class UserRealm extends AuthorizingRealm {
             //用户名不存在，shiro会返回UnknowAccountException异常
             return null;
         }
-
         //2.判断密码
-        return new SimpleAuthenticationInfo(user, user.getPassword(), "");
+//        return new SimpleAuthenticationInfo(user, user.getPassword(), "userRealm");
+        return null;
     }
 }

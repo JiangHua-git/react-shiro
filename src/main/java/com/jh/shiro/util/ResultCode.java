@@ -19,34 +19,46 @@ public enum ResultCode {
      * 登录成功
      */
     LOGINSUCCESS(true, 200, "登录成功"),
+
     /**
      * 操作成功
      */
     SUCCESS(true, 200, "操作成功"),
+
     /**
      * 操作失败
      */
     FAIL(false, 500, "操作失败"),
+
     /**
      * 您还未登录
      */
     UNAUTHENTICATION(false, 10001, "您还未登录"),
+
     /**
      * 权限不足
      */
     UNAUTHORISE(false, 10003, "权限不足"),
+
+    /**
+     * 您还未登录
+     */
+    USERNAMEORPASSWORDERROR(false, 10004, "用户名或密码错误"),
     /**
      * 抱歉，系统繁忙，请稍后再试
      */
     SAVE_ERROR(false, 99999, "抱歉，系统繁忙，请稍后再试");
+
     /**
      * 操作是否成功
      */
     Boolean success;
+
     /**
      * 操作代码
      */
     Integer code;
+
     /**
      * 提示信息
      */

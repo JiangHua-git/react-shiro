@@ -1,6 +1,7 @@
 package com.jh.shiro.service;
 
 import com.jh.shiro.entity.DataResult;
+import com.jh.shiro.entity.UserEntity;
 
 /**
  * 用户Service
@@ -32,10 +33,18 @@ public interface UserService {
     /**
      * 获取用户权限
      *
-     * @param id 用户id
+     * @param name 用户名
      * @return Result
      * @author jh
      * @date 2020/3/11
      */
-    DataResult getAuth(Integer id);
+    DataResult getAuth(String name);
+
+    /**
+     * 根据id获取用户信息
+     *
+     * @param id
+     * @return: UserEntity
+     */
+    UserEntity getUserInfoById(int id);
 }

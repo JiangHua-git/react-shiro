@@ -36,12 +36,12 @@ public interface UserDao {
     /**
      * 获取用户权限
      *
-     * @param id 用户id
+     * @param name 姓名
      * @return String
      * @author jh
      * @date 2020/3/11
      */
-    String getAuth(Integer id);
+    List<String> getAuth(String name);
 
     /**
      * qq
@@ -50,4 +50,12 @@ public interface UserDao {
      * @return
      */
     int updateUserInfo(UserEntity userEntity);
+
+    /**
+     * 根据id获取用户信息
+     *
+     * @param id
+     * @return: UserEntity
+     */
+    UserEntity getUserInfoById(int id);
 }

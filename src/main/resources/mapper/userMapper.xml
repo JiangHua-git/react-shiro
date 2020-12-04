@@ -7,10 +7,18 @@
     <select id="getUserInfo" resultType="userentity" parameterType="String">
         select id,name,age,password from users where name=#{_paramer} limit 1
     </select>
-    <select id="getAuth" resultType="String" parameterType="int">
-        select auth from users where id=#{_paramer}
+    <select id="getAuth" resultType="userentity" parameterType="String">
+        select a.auth from authority a
+        inner join role_auth b on a.id=b.authid
+        inner join role c on c.id=b.rid
+        inner join user_role d on d.rid=c.id
+        inner join users e on e.id=d.uid
+        where e.name=#{name}
     </select>
     <update id="updateUserInfo" parameterType="userEntity">
         update users set name=#{name} where id=#{id}
     </update>
+    <select id="getUserInfoById" parameterType="int" resultType="userEntity">
+        select * from users where id=#{_paramer}
+    </select>
 </mapper>
